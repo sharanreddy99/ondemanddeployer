@@ -30,6 +30,8 @@ func (u *AWSController) PublishSNS() {
 // @router /subscribeSNS [post]
 func (u *AWSController) SubscribeSNS() {
 	fmt.Println(string(u.Ctx.Input.RequestBody))
-	u.Data["json"] = map[string]string{"status": "Received the message successfully"}
+	resp := aws.SubscribeMessage(u.Ctx.Request)
+	u.Data["json"] = resp
+
 	u.ServeJSON()
 }
