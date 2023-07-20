@@ -9,7 +9,6 @@ package routers
 
 import (
 	"ondemanddeployer/controllers"
-	"ondemanddeployer/controllers/github"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -18,7 +17,7 @@ func init() {
 	ns := beego.NewNamespace("/v1",
 		beego.NSNamespace("/github",
 			beego.NSInclude(
-				&github.GithubController{},
+				&controllers.GithubController{},
 			),
 		),
 		beego.NSNamespace("/base",

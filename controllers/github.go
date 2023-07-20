@@ -1,4 +1,4 @@
-package github
+package controllers
 
 import (
 	"ondemanddeployer/components/github"
