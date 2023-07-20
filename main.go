@@ -16,63 +16,49 @@ package main
 // }
 
 import (
+	"fmt"
+	"io"
+	"net/http"
 	"ondemanddeployer/constants"
+	"ondemanddeployer/utils"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sns"
-	"github.com/beego/beego"
-
-	"fmt"
-	"os"
 )
 
-func Middleware(componentName string) func(http.Handler) http.Handler {
-	return func(h http.Handler) http.Handler {
+func Subscribe() {
+	var sess = session.Must(session.NewSession(
+		&aws.Config{
+			Region: aws.String("ap-south-1"),
+		},
+	))
 
-		opts := []nethttp.MWOption{
-			nethttp.MWComponentName(componentName),
-			nethttp.OperationNameFunc(func(r *http.Request) string {
-				return "HTTP " + r.Method + " " + r.URL.Path
-			}),
-			nethttp.MWURLTagFunc(func(u *url.URL) string {
-				return u.String()
-			}),
-			nethttp.MWSpanFilter(func(r *http.Request) bool {
-				return true
-			}),
-			nethttp.MWSpanObserver(func(span opentracing.Span, r *http.Request) {
+	var snsService = sns.New(sess)
 
-			}),
+	var ipAddress string = ""
+	if resp, err := http.Get(fmt.Sprintf("%v/%v", constants.AWS_INSTANCE_METADATA_ENDPOINT, "local-ipv4")); err != nil {
+		defer resp.Body.Close()
+
+		if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
+			ipAddress = string(bodyBytes)
 		}
-
-		return nethttp.Middleware(opentracing.GlobalTracer(), h, opts...)
 	}
+
+	inp := &sns.SubscribeInput{
+		Endpoint: aws.String(fmt.Sprintf("%v/%v", ipAddress, constants.AWS_SNS_SUBSCRIPTION_PATH)),
+		Protocol: aws.String("http"),
+		TopicArn: aws.String(constants.AWS_SNS_TOPIC_ARN),
+	}
+
+	output, err := snsService.Subscribe(inp)
+	if err != nil {
+		utils.Log("Subscription Error: ", err.Error())
+	}
+
+	utils.Log("Subscription Request Successful: ", output.String())
 }
 
 func main() {
-	// Initialize a session that the SDK will use to load
-	// credentials from the shared credentials file. (~/.aws/credentials).
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-
-	beego.RunWithMiddleWares = 
-
-	svc := sns.New(sess)
-	
-
-	// svc.Subsc
-
-	// result, err := svc.Publish(&sns.PublishInput{
-	// 	Message:  aws.String("hello sharan"),
-	// 	TopicArn: aws.String(constants.AWS_SNS_TOPIC_ARN),
-	// })
-
-	// if err != nil {
-	// 	fmt.Println(err.Error())
-	// 	os.Exit(1)
-	// }
-
-	// fmt.Printf("%+v", result)
+	Subscribe()
 }

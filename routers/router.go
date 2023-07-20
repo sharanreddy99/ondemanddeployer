@@ -20,6 +20,10 @@ func init() {
 				&controllers.GithubController{},
 			),
 		),
+		beego.NSNamespace("/aws",
+			beego.NSInclude(
+				&controllers.AWSController{},
+			)),
 		beego.NSNamespace("/base",
 			beego.NSInclude(
 				&controllers.BaseController{},
