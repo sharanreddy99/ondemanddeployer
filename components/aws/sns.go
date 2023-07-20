@@ -3,6 +3,7 @@ package aws
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"ondemanddeployer/constants"
 	"ondemanddeployer/utils"
@@ -18,39 +19,26 @@ var snsClient *sns.SNS
 type RequestType string
 
 type SubscriptionConfirmationRequest struct {
-	Type              RequestType
-	MessageId         string
-	TopicArn          string
-	Message           string
-	Timestamp         string
-	SignatureVersion  string
-	SigningCertURL    string
-	SubscribeURL      string
-	Token             string
-	MessageAttributes MessageAttribute
+	Type             RequestType
+	MessageId        string
+	TopicArn         string
+	Message          string
+	Timestamp        string
+	SignatureVersion string
+	SigningCertURL   string
+	SubscribeURL     string
+	Token            string
 }
 
 type NotificationRequest struct {
-	Type              RequestType
-	MessageId         string
-	TopicArn          string
-	Message           string
-	Timestamp         string
-	SignatureVersion  string
-	SigningCertURL    string
-	MessageAttributes MessageAttribute
+	Type             RequestType
+	MessageId        string
+	TopicArn         string
+	Message          string
+	Timestamp        string
+	SignatureVersion string
+	SigningCertURL   string
 }
-
-type MessageAttribute struct {
-	Event Event
-}
-
-type Event struct {
-	Type  string
-	Value EventValue
-}
-
-type EventValue string
 
 func (s *SubscriptionConfirmationRequest) Bind(r *http.Request) error {
 	return json.NewDecoder(r.Body).Decode(s)
@@ -76,7 +64,7 @@ func PublishMessage(message string) {
 
 // Identify incoming notification request and process it.
 func SubscribeMessage(r *http.Request) map[string]interface{} {
-	var resp map[string]interface{}
+	resp := map[string]interface{}{}
 	var err error
 
 	switch r.Header.Get("X-Amz-Sns-Message-Type") {
@@ -127,27 +115,26 @@ func confirmSubscription(r *http.Request) error {
 
 // Consumes published events. Called as many times as the client publishes.
 func handleReceivedMessage(r *http.Request) error {
-	// var req NotificationRequest
-	// if err := req.Bind(r); err != nil {
-	// 	return fmt.Errorf("request binding: %w", err)
-	// }
+	var req NotificationRequest
+	if err := req.Bind(r); err != nil {
+		utils.Log("Request Binding: %w", err)
+		return err
+	}
 
-	// switch req.MessageAttributes.Event.Value {
-	// case Upload:
-	// 	log.Printf("uploading %s ...", req.Message)
-	// case Download:
-	// 	log.Printf("downloading %s ...", req.Message)
-	// default:
-	// 	return fmt.Errorf("unknwon event value")
-	// }
+	messageObject := make(map[string]interface{})
+	json.Unmarshal([]byte(req.Message), &messageObject)
+
+	fmt.Println("Hello: ", messageObject)
 
 	return nil
 }
 
 func init() {
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
+	var sess = session.Must(session.NewSession(
+		&aws.Config{
+			Region: aws.String("us-east-1"),
+		},
+	))
 
 	snsClient = sns.New(sess)
 }
