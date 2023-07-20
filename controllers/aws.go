@@ -8,7 +8,6 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-// Operations about Github
 type AWSController struct {
 	beego.Controller
 }
