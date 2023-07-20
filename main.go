@@ -39,7 +39,7 @@ func Subscribe() {
 	}
 
 	inp := &sns.SubscribeInput{
-		Endpoint: aws.String(fmt.Sprintf("http://%v/%v", ipAddress, constants.AWS_SNS_SUBSCRIPTION_PATH)),
+		Endpoint: aws.String(fmt.Sprintf("http://%v:%v/%v", ipAddress, constants.HTTP_PORT, constants.AWS_SNS_SUBSCRIPTION_PATH)),
 		Protocol: aws.String("http"),
 		TopicArn: aws.String(constants.AWS_SNS_TOPIC_ARN),
 	}
