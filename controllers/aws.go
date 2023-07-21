@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
 	"ondemanddeployer/components/aws"
 
@@ -17,9 +16,7 @@ type AWSController struct {
 // @Success 200 {object}
 // @router /publishSNS [post]
 func (u *AWSController) PublishSNS() {
-	var message string
-	json.Unmarshal(u.Ctx.Input.RequestBody, &message)
-	aws.PublishMessage(message)
+	aws.PublishMessage(string(u.Ctx.Input.RequestBody))
 	u.Data["json"] = map[string]string{"status": "Published the message successfully"}
 	u.ServeJSON()
 }

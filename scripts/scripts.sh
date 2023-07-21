@@ -9,6 +9,7 @@ function getPath() {
 }
 
 function setupProject() {
+    echo "entered function"
     repoName=$1
     repoPath=''
     getPath repoPath $repoName

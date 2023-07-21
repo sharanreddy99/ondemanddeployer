@@ -3,8 +3,8 @@ package aws
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"ondemanddeployer/components/bashscript"
 	"ondemanddeployer/constants"
 	"ondemanddeployer/utils"
 	"time"
@@ -121,12 +121,19 @@ func handleReceivedMessage(r *http.Request) error {
 		return err
 	}
 
-	messageObject := make(map[string]interface{})
-	json.Unmarshal([]byte(req.Message), &messageObject)
+	// var message string = "{\n  \"project\": \"ceta\",\n    \"params\": \"[\\\"setupProject\\\",\\\"ceta\\\", \\\"https://github.com/sharanreddy99/ceta\\\", \\\"main\\\"]\"\n}"
+	bashScriptObj := bashscript.BashScriptPayload{}
+	if err := json.Unmarshal([]byte(req.Message), &bashScriptObj); err != nil {
+		utils.Log("Unmarshalling notification: ", err.Error())
+		return err
+	}
 
-	fmt.Println("Hello: ", messageObject)
+	if err := json.Unmarshal([]byte(bashScriptObj.ParamsStr), &bashScriptObj.Params); err != nil {
+		utils.Log("Unmarshalling notification params: ", err.Error())
+		return err
+	}
 
-	return nil
+	return bashScriptObj.Execute()
 }
 
 func init() {
