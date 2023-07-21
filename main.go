@@ -62,5 +62,7 @@ func main() {
 		})
 	}
 
+	utils.Log("Server is up")
+
 	beego.Run()
 }
