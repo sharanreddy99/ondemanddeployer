@@ -128,11 +128,6 @@ func handleReceivedMessage(r *http.Request) error {
 		return err
 	}
 
-	if err := json.Unmarshal([]byte(bashScriptObj.ParamsStr), &bashScriptObj.Params); err != nil {
-		utils.Log("Unmarshalling notification params: ", err.Error())
-		return err
-	}
-
 	return bashScriptObj.Execute()
 }
 

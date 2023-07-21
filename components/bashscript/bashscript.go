@@ -5,9 +5,8 @@ import (
 )
 
 type BashScriptPayload struct {
-	Project   string   `json:"project"`
-	ParamsStr string   `json:"params"`
-	Params    []string `json:"-"`
+	Project string   `json:"project"`
+	Params  []string `json:"params"`
 }
 
 func (b *BashScriptPayload) Execute() error {
