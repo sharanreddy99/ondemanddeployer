@@ -121,14 +121,14 @@ func handleReceivedMessage(r *http.Request) error {
 		return err
 	}
 
-	// var message string = "{\n  \"project\": \"ceta\",\n    \"params\": \"[\\\"setupProject\\\",\\\"ceta\\\", \\\"https://github.com/sharanreddy99/ceta\\\", \\\"main\\\"]\"\n}"
-	bashScriptObj := bashscript.BashScriptPayload{}
+	bashScriptObj := bashscript.BashScriptPayload{TimeStamp: req.Timestamp}
 	if err := json.Unmarshal([]byte(req.Message), &bashScriptObj); err != nil {
 		utils.Log("Unmarshalling notification: ", err.Error())
 		return err
 	}
 
-	return bashScriptObj.Execute()
+	bashScriptObj.AddToQueue()
+	return nil
 }
 
 func init() {
