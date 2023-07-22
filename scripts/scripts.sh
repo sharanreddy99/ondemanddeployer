@@ -9,6 +9,12 @@ function getPath() {
     eval "$1=$newPath"
 }
 
+function replaceBaseURLInENV() {
+    baseURL=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+    repoPath=$1
+    sed -i "s,localhost,${baseURL},g" $repoPath/.env
+}
+
 function setupProject() {
     echo "Entered setupProject function"
     repoName=$1
@@ -28,7 +34,8 @@ function setupProject() {
         git clone ${repoURL} -b ${branch} ${repoPath}
     fi
 
-    aws s3 cp s3://${s3BucketName}/projects/${repoName}/.env ${repoPath}/aaaatestabcd
+    aws s3 cp s3://${s3BucketName}/projects/${repoName}/.env ${repoPath}/.env
+    replaceBaseURLInENV $repoPath
     buildProject $repoName $forceBuild
     upProject $repoName
 

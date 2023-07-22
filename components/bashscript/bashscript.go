@@ -17,6 +17,7 @@ type BashScriptPayload struct {
 var bashScriptQueue []BashScriptPayload
 var bashScriptLength int = 10
 var lock sync.Mutex
+var ActiveProject string = ""
 
 func (b *BashScriptPayload) AddToQueue() {
 	if len(bashScriptQueue) == bashScriptLength {
@@ -36,7 +37,7 @@ func Execute() error {
 	}
 
 	utils.Log("Executing Task: ", task)
-
+	ActiveProject = ""
 	cmd := exec.Command("./scripts/scripts.sh", task.Params...)
 
 
@@ -56,6 +57,7 @@ func Execute() error {
 	}
 	
 	cmd.Wait()
+	ActiveProject = task.Project
 	return err
 }
 

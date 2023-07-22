@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"ondemanddeployer/components/bashscript"
 	"ondemanddeployer/constants"
 	"ondemanddeployer/utils"
 )
@@ -13,6 +14,7 @@ type GithubRepoObj struct {
 	Description string `json:"description"`
 	URL         string `json:"clone_url"`
 	Branch      string `json:"default_branch"`
+	IsActive bool `json:"is_active"`
 }
 
 func FetchAllReposList() []GithubRepoObj {
@@ -42,6 +44,10 @@ func FetchAllReposList() []GithubRepoObj {
 	if err = json.Unmarshal(responseBytes, &respJson); err != nil {
 		utils.Log("Error occured while unmarshalling response: ", err.Error())
 		return respJson
+	}
+
+	for i:= 0; i < len(respJson); i ++ { 
+		respJson[i].IsActive = respJson[i].Name == bashscript.ActiveProject
 	}
 
 	return respJson
