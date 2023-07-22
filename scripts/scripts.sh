@@ -35,6 +35,7 @@ function setupProject() {
 }
 
 function buildProject() {
+    downAllProjects
     echo "Entered buildProject function"
     repoName=$1
     isForceBuild=$2
@@ -50,7 +51,6 @@ function buildProject() {
 }
 
 function upProject() {
-    downAllProjects
     echo "Entered upProject function"
     repoName=''
     getPath repoName $1
