@@ -17,7 +17,7 @@ func Log(params ...interface{}) {
 
 	defer f.Close()
 
-	if _, err = f.WriteString(fmt.Sprintf("%v", params)); err != nil {
+	if _, err = f.WriteString(fmt.Sprintf("%v\n\n", params)); err != nil {
 		panic(err)
 	}
 }

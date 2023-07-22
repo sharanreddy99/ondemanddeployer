@@ -1,0 +1,4 @@
+{
+    "project": "ceta",
+    "params": ["setupProject", "ceta", "https://github.com/sharanreddy99/ceta", "main"]
+}

@@ -2,6 +2,7 @@ package bashscript
 
 import (
 	"ondemanddeployer/utils"
+	"os"
 	"os/exec"
 	"sync"
 	"time"
@@ -37,8 +38,27 @@ func Execute() error {
 	utils.Log("Executing Task: ", task)
 
 	cmd := exec.Command("./scripts/scripts.sh", task.Params...)
-	err := cmd.Run()
-	time.Sleep(1 * time.Minute)
+
+
+	// Make test file
+	testFile, err := os.Create("test.txt")
+	if err != nil {
+		utils.Log("Error creating file: ",err.Error())
+	}
+
+	defer testFile.Close()
+
+	// Redirect the output here (this is the key part)
+	cmd.Stdout = testFile
+
+	err = cmd.Start(); if err != nil {
+		utils.Log("Error running command: ",err.Error())
+	}
+	
+	cmd.Wait()
+
+	// err := cmd.Run()
+	// time.Sleep(1 * time.Minute)
 	return err
 }
 
@@ -55,7 +75,7 @@ func getNextTask() BashScriptPayload {
 func init() {
 	bashScriptQueue = make([]BashScriptPayload, 10)
 
-	ticker := time.NewTicker(2 * time.Minute)
+	ticker := time.NewTicker(30 * time.Second)
 
 	go func() {
 		for range ticker.C {
