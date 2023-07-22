@@ -1,6 +1,6 @@
 #!/bin/bash
 
-projectsBaseURL='/home/sharanreddy/Documents'
+projectsBaseURL='/home/ubuntu'
 s3BucketName='sharankonda'
 
 function getPath() {
