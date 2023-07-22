@@ -105,7 +105,7 @@ func confirmSubscription(r *http.Request) error {
 		Token:    aws.String(req.Token),
 		TopicArn: aws.String(req.TopicArn),
 	}); err != nil {
-		utils.Log("Subscription Cnfirmation Error: ", err)
+		utils.Log("Subscription Confirmation Error: ", err)
 		return err
 	}
 
@@ -123,7 +123,7 @@ func handleReceivedMessage(r *http.Request) error {
 
 	bashScriptObj := bashscript.BashScriptPayload{TimeStamp: req.Timestamp}
 	if err := json.Unmarshal([]byte(req.Message), &bashScriptObj); err != nil {
-		utils.Log("Unmarshalling notification: ", err.Error())
+		utils.Log("Unmarshalling notification error: ", err.Error())
 		return err
 	}
 
@@ -134,7 +134,7 @@ func handleReceivedMessage(r *http.Request) error {
 func init() {
 	var sess = session.Must(session.NewSession(
 		&aws.Config{
-			Region: aws.String("us-east-1"),
+			Region: aws.String(constants.AWS_REGION),
 		},
 	))
 

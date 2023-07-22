@@ -4,18 +4,20 @@ projectsBaseURL='/home/ubuntu'
 s3BucketName='sharankonda'
 
 function getPath() {
+    echo "Entered getPath function"
     newPath="$projectsBaseURL/$2"
     eval "$1=$newPath"
 }
 
 function setupProject() {
-    echo "entered function"
+    echo "Entered setupProject function"
     repoName=$1
     repoPath=''
     getPath repoPath $repoName
 
     repoURL=$2
     branch=$3
+    forceBuild=$4
 
     cd $projectsBaseURL
     if [ -d "${repoName}" ]; then
@@ -27,9 +29,13 @@ function setupProject() {
     fi
 
     aws s3 cp s3://${s3BucketName}/projects/${repoName}/.env ${repoPath}/aaaatestabcd
+    buildProject $repoName $forceBuild
+    upProject $repoName
+
 }
 
 function buildProject() {
+    echo "Entered buildProject function"
     repoName=$1
     isForceBuild=$2
     repoPath=''
@@ -44,6 +50,8 @@ function buildProject() {
 }
 
 function upProject() {
+    downAllProjects
+    echo "Entered upProject function"
     repoName=''
     getPath repoName $1
 
@@ -52,7 +60,8 @@ function upProject() {
 }
 
 function downAllProjects() {
-    docker container stop $(docker ps -aq)
+    echo "Entered downAllProject function"
+    docker container stop $(docker ps -q)
 }
 
 function clearAllProjects() {

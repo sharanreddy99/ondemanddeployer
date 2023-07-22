@@ -8,6 +8,7 @@ import (
 	"ondemanddeployer/utils"
 	"time"
 
+	_ "ondemanddeployer/components/bashscript"
 	_ "ondemanddeployer/routers"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -19,7 +20,7 @@ import (
 func Subscribe() {
 	var sess = session.Must(session.NewSession(
 		&aws.Config{
-			Region: aws.String("us-east-1"),
+			Region: aws.String(constants.AWS_REGION),
 		},
 	))
 

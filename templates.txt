@@ -1,4 +1,22 @@
-{
+[
+    {
     "project": "ceta",
-    "params": ["setupProject", "ceta", "https://github.com/sharanreddy99/ceta", "main"]
-}
+    "params": ["setupProject", "ceta", "https://github.com/sharanreddy99/ceta", "main", "false"]
+    },
+    {
+        "project": "ceta",
+        "params": ["buildProject", "ceta"]
+    },
+    {
+        "project": "ceta",
+        "params": ["upProject", "ceta"]
+    },
+    {
+        "project": "ceta",
+        "params": ["downAllProjects"]
+    },
+    {
+        "project": "ceta",
+        "params": ["clearAllProjects"]
+    }
+]

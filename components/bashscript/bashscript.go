@@ -56,9 +56,6 @@ func Execute() error {
 	}
 	
 	cmd.Wait()
-
-	// err := cmd.Run()
-	// time.Sleep(1 * time.Minute)
 	return err
 }
 
@@ -73,7 +70,7 @@ func getNextTask() BashScriptPayload {
 }
 
 func init() {
-	bashScriptQueue = make([]BashScriptPayload, 10)
+	bashScriptQueue = make([]BashScriptPayload, 0)
 
 	ticker := time.NewTicker(30 * time.Second)
 

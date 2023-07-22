@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"ondemanddeployer/components/aws"
+	"ondemanddeployer/utils"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -26,7 +26,7 @@ func (u *AWSController) PublishSNS() {
 // @Success 200 {object}
 // @router /subscribeSNS [post]
 func (u *AWSController) SubscribeSNS() {
-	fmt.Println(string(u.Ctx.Input.RequestBody))
+	utils.Log(string(u.Ctx.Input.RequestBody))
 	resp := aws.SubscribeMessage(u.Ctx.Request)
 	u.Data["json"] = resp
 
