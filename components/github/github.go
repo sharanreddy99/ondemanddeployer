@@ -50,9 +50,17 @@ func FetchAllReposList() []GithubRepoObj {
 		return respJson
 	}
 
+	var filteredRespJson []GithubRepoObj = make([]GithubRepoObj, 0)
+
 	for i := 0; i < len(respJson); i++ {
 		respJson[i].IsActive = respJson[i].Name == bashscript.ActiveProject
+		for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
+			if respJson[i].Name == allowedRepo {
+				filteredRespJson = append(filteredRespJson, respJson[i])
+				break
+			}
+		}
 	}
 
-	return respJson
+	return filteredRespJson
 }
