@@ -48,7 +48,19 @@ func FetchAllReposList() []GithubRepoObj {
 	}
 
 	if !isExpired {
-		return inputReposObj
+		var filteredRespJson []GithubRepoObj = make([]GithubRepoObj, 0)
+		for i := 0; i < len(inputReposObj); i++ {
+			inputReposObj[i].IsActive = inputReposObj[i].Name == bashscript.ActiveProject
+			inputReposObj[i].Timestamp = time.Now()
+			for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
+				if inputReposObj[i].Name == allowedRepo {
+					filteredRespJson = append(filteredRespJson, inputReposObj[i])
+					break
+				}
+			}
+		}
+
+		return filteredRespJson
 	}
 
 	var err error
