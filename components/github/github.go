@@ -10,11 +10,15 @@ import (
 )
 
 type GithubRepoObj struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	URL         string `json:"clone_url"`
-	Branch      string `json:"default_branch"`
-	IsActive bool `json:"is_active"`
+	Name            string `json:"name"`
+	Description     string `json:"description"`
+	URL             string `json:"clone_url"`
+	SVNUrl          string `json:"svn_url"`
+	StargazersCount int    `json:"stargazers_count"`
+	LanguagesUrl    int    `json:"languages_url"`
+	PushedAt        string `json:"pushed_at"`
+	Branch          string `json:"default_branch"`
+	IsActive        bool   `json:"is_active"`
 }
 
 func FetchAllReposList() []GithubRepoObj {
@@ -46,7 +50,7 @@ func FetchAllReposList() []GithubRepoObj {
 		return respJson
 	}
 
-	for i:= 0; i < len(respJson); i ++ { 
+	for i := 0; i < len(respJson); i++ {
 		respJson[i].IsActive = respJson[i].Name == bashscript.ActiveProject
 	}
 
