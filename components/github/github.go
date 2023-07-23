@@ -15,7 +15,7 @@ type GithubRepoObj struct {
 	URL             string `json:"clone_url"`
 	SVNUrl          string `json:"svn_url"`
 	StargazersCount int    `json:"stargazers_count"`
-	LanguagesUrl    int    `json:"languages_url"`
+	LanguagesUrl    string `json:"languages_url"`
 	PushedAt        string `json:"pushed_at"`
 	Branch          string `json:"default_branch"`
 	IsActive        bool   `json:"is_active"`
