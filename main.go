@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sns"
+	"github.com/beego/beego/plugins/cors"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -64,6 +65,11 @@ func main() {
 	}
 
 	utils.Log("Server is up")
+
+	beego.InsertFilter("*", beego.BeforeRouter,cors.Allow(&cors.Options{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "OPTIONS"},
+	}))
 
 	beego.Run()
 }
