@@ -1,0 +1,75 @@
+[
+    {
+        "name": "housemate",
+        "data": {
+            "CSS": 132373,
+            "Dockerfile": 291,
+            "HTML": 80026,
+            "JavaScript": 567475,
+            "Shell": 4229,
+            "TypeScript": 119208
+        },
+        "timestamp": "2023-07-23T09:34:18.420942247-04:00"
+    },
+    {
+        "name": "ceta",
+        "data": {
+            "CSS": 109482,
+            "Dockerfile": 520,
+            "HTML": 6277,
+            "Hack": 78818,
+            "JavaScript": 699723,
+            "PHP": 223466,
+            "Shell": 964
+        },
+        "timestamp": "2023-07-23T09:34:18.508858763-04:00"
+    },
+    {
+        "name": "image_slideshow",
+        "data": {
+            "CSS": 7043,
+            "Dockerfile": 969,
+            "Go": 23188,
+            "HTML": 1863,
+            "JavaScript": 34252,
+            "PHP": 15746,
+            "Shell": 1480
+        },
+        "timestamp": "2023-07-23T09:34:18.599253839-04:00"
+    },
+    {
+        "name": "securechat",
+        "data": {
+            "Batchfile": 30,
+            "CSS": 60665,
+            "Dockerfile": 355,
+            "HTML": 1788,
+            "JavaScript": 231655,
+            "Shell": 883
+        },
+        "timestamp": "2023-07-23T09:34:18.691757246-04:00"
+    },
+    {
+        "name": "elevator_multithreading",
+        "data": {
+            "CSS": 1077,
+            "Dockerfile": 265,
+            "HTML": 1721,
+            "Java": 24091,
+            "JavaScript": 12587,
+            "Shell": 148
+        },
+        "timestamp": "2023-07-23T09:34:18.776733958-04:00"
+    },
+    {
+        "name": "polls_viewer",
+        "data": {
+            "Dockerfile": 414,
+            "HTML": 12029,
+            "JavaScript": 192,
+            "Python": 17024,
+            "Shell": 518
+        },
+        "timestamp": "2023-07-23T09:34:18.864176153-04:00"
+    }
+]
