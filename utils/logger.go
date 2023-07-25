@@ -3,7 +3,10 @@ package utils
 import (
 	"fmt"
 	"os"
+	"sync"
 )
+
+var lock sync.Mutex
 
 func Log(params ...interface{}) {
 	// Write to stdout
@@ -17,7 +20,14 @@ func Log(params ...interface{}) {
 
 	defer f.Close()
 
+	lock.Lock()
+	defer lock.Unlock()
 	if _, err = f.WriteString(fmt.Sprintf("%v\n\n", params)); err != nil {
 		panic(err)
 	}
+
+}
+
+func init() {
+	lock = sync.Mutex{}
 }
