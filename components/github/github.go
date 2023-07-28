@@ -2,7 +2,6 @@ package github
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 	"ondemanddeployer/components/bashscript"
@@ -66,7 +65,6 @@ func FetchAllReposList() []GithubRepoObj {
 			}
 		}
 
-		fmt.Println("cached apis")
 		return filteredRespJson
 	}
 
@@ -113,7 +111,6 @@ func FetchAllReposList() []GithubRepoObj {
 
 	utils.WriteToCache(constants.GITHUB_REPOS_DATA_PATH, filteredRespJson)
 
-	fmt.Println("New APIS")
 	return filteredRespJson
 }
 
@@ -140,7 +137,6 @@ func FetchAllLanguagesList() []GithubLanguageObj {
 	}
 
 	if !isExpired {
-		fmt.Println("cached apis")
 		return inputLanguagesObj
 	}
 
@@ -179,6 +175,5 @@ func FetchAllLanguagesList() []GithubLanguageObj {
 
 	utils.WriteToCache(constants.GITHUB_LANGUAGES_DATA_PATH, respJson)
 
-	fmt.Println("new apis")
 	return respJson
 }
