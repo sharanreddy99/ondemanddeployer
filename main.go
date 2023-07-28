@@ -66,7 +66,7 @@ func main() {
 
 	utils.Log("Server is up")
 
-	beego.InsertFilter("*", beego.BeforeRouter,cors.Allow(&cors.Options{
+	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "OPTIONS"},
 	}))

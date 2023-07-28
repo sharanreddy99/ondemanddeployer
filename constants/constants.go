@@ -8,14 +8,13 @@ import (
 var (
 	HTTP_PORT string = "8080"
 
-	GITHUB_USERNAME       string   = "sharanreddy99"
-	GITHUB_REPOS_LIST_URL string   = fmt.Sprintf("https://api.github.com/users/%s/repos", GITHUB_USERNAME)
-	GITHUB_LANGUAGE_LIST_URL string   = fmt.Sprintf("https://api.github.com/repos/%s/{{repoName}}/languages", GITHUB_USERNAME)
-	GITHUB_ALLOWED_REPOS  []string = []string{"housemate", "securechat", "ceta", "elevator_multithreading", "image_slideshow", "polls_viewer"}
-	GITHUB_LANGUAGES_DATA_PATH string = "data/github/languages.json"
-	GITHUB_REPOS_DATA_PATH string = "data/github/repos.json"
-	GITHUB_CACHE_EXPIRY_TIME time.Duration = 24*time.Hour
-
+	GITHUB_USERNAME            string        = "sharanreddy99"
+	GITHUB_REPOS_LIST_URL      string        = fmt.Sprintf("https://api.github.com/users/%s/repos", GITHUB_USERNAME)
+	GITHUB_LANGUAGE_LIST_URL   string        = fmt.Sprintf("https://api.github.com/repos/%s/{{repoName}}/languages", GITHUB_USERNAME)
+	GITHUB_ALLOWED_REPOS       []string      = []string{"housemate", "securechat", "ceta", "elevator_multithreading", "image_slideshow", "polls_viewer"}
+	GITHUB_LANGUAGES_DATA_PATH string        = "data/github/languages.json"
+	GITHUB_REPOS_DATA_PATH     string        = "data/github/repos.json"
+	GITHUB_CACHE_EXPIRY_TIME   time.Duration = 24 * time.Hour
 
 	AWS_REGION                     string        = "us-east-1"
 	AWS_SNS_TOPIC_ARN              string        = "arn:aws:sns:us-east-1:004517456981:sharankonda"
