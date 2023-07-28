@@ -49,14 +49,14 @@ func FetchAllReposList() []GithubRepoObj {
 
 	if !isExpired {
 		var filteredRespJson []GithubRepoObj = make([]GithubRepoObj, 0)
-		for i := 0; i < len(inputReposObj); i++ {
-			inputReposObj[i].IsActive = inputReposObj[i].Name == bashscript.ActiveProject
-			inputReposObj[i].Timestamp = time.Now()
-			for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
-				if inputReposObj[i].Name == allowedRepo {
-					filteredRespJson = append(filteredRespJson, inputReposObj[i])
-					break
-				}
+		for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
+			for i := 0; i < len(inputReposObj); i++ {
+				inputReposObj[i].IsActive = inputReposObj[i].Name == bashscript.ActiveProject
+				inputReposObj[i].Timestamp = time.Now()
+					if inputReposObj[i].Name == allowedRepo {
+						filteredRespJson = append(filteredRespJson, inputReposObj[i])
+						break
+					}
 			}
 		}
 
@@ -93,14 +93,14 @@ func FetchAllReposList() []GithubRepoObj {
 
 	var filteredRespJson []GithubRepoObj = make([]GithubRepoObj, 0)
 
-	for i := 0; i < len(respJson); i++ {
-		respJson[i].IsActive = respJson[i].Name == bashscript.ActiveProject
-		respJson[i].Timestamp = time.Now()
-		for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
-			if respJson[i].Name == allowedRepo {
-				filteredRespJson = append(filteredRespJson, respJson[i])
-				break
-			}
+	for _, allowedRepo := range constants.GITHUB_ALLOWED_REPOS {
+		for i := 0; i < len(respJson); i++ {
+			respJson[i].IsActive = respJson[i].Name == bashscript.ActiveProject
+			respJson[i].Timestamp = time.Now()
+				if respJson[i].Name == allowedRepo {
+					filteredRespJson = append(filteredRespJson, respJson[i])
+					break
+				}
 		}
 	}
 
