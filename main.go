@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"net/http"
 	"ondemanddeployer/constants"
 	"ondemanddeployer/utils"
 	"time"
@@ -27,22 +25,22 @@ func Subscribe() {
 
 	var snsService = sns.New(sess)
 
-	var ipAddress string = ""
-	if resp, err := http.Get(fmt.Sprintf("%v/%v", constants.AWS_INSTANCE_METADATA_ENDPOINT, "public-ipv4")); err == nil {
-		defer resp.Body.Close()
+	// var ipAddress string = ""
+	// if resp, err := http.Get(fmt.Sprintf("%v/%v", constants.AWS_INSTANCE_METADATA_ENDPOINT, "public-ipv4")); err == nil {
+	// 	defer resp.Body.Close()
 
-		if bodyBytes, err := io.ReadAll(resp.Body); err == nil {
-			ipAddress = string(bodyBytes)
-		} else {
-			panic(err)
-		}
-	} else {
-		panic(err)
-	}
+	// 	if bodyBytes, err := io.ReadAll(resp.Body); err == nil {
+	// 		ipAddress = string(bodyBytes)
+	// 	} else {
+	// 		panic(err)
+	// 	}
+	// } else {
+	// 	panic(err)
+	// }
 
 	inp := &sns.SubscribeInput{
-		Endpoint: aws.String(fmt.Sprintf("https://%v:%v/%v", ipAddress, constants.HTTP_PORT, constants.AWS_SNS_SUBSCRIPTION_PATH)),
-		Protocol: aws.String("https"),
+		Endpoint: aws.String(fmt.Sprintf("https://%v:%v/%v", constants.AWS_SNS_HOST_IP, constants.HTTP_PORT, constants.AWS_SNS_SUBSCRIPTION_PATH)),
+		Protocol: aws.String(constants.AWS_SNS_PROTOCOL),
 		TopicArn: aws.String(constants.AWS_SNS_TOPIC_ARN),
 	}
 
