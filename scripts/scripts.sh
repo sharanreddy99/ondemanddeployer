@@ -10,7 +10,8 @@ function getPath() {
 }
 
 function replaceBaseURLInENV() {
-    baseURL=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+    baseURL="project.sharankonda.com"
+    # baseURL=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
     repoPath=$1
     sed -i "s,localhost,${baseURL},g" $repoPath/.env
 }
