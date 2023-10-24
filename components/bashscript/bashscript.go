@@ -40,11 +40,10 @@ func Execute() error {
 	ActiveProject = ""
 	cmd := exec.Command("./scripts/scripts.sh", task.Params...)
 
-
 	// Make test file
 	testFile, err := os.Create("test.txt")
 	if err != nil {
-		utils.Log("Error creating file: ",err.Error())
+		utils.Log("Error creating file: ", err.Error())
 	}
 
 	defer testFile.Close()
@@ -52,11 +51,12 @@ func Execute() error {
 	// Redirect the output here (this is the key part)
 	cmd.Stdout = testFile
 
-	err = cmd.Start(); if err != nil {
-		utils.Log("Error running command: ",err.Error())
+	if err = cmd.Start(); err != nil {
+		utils.Log("Error running command: ", err.Error())
 	}
-	
+
 	cmd.Wait()
+	time.Sleep(30 * time.Second)
 	ActiveProject = task.Project
 	return err
 }
@@ -74,7 +74,7 @@ func getNextTask() BashScriptPayload {
 func init() {
 	bashScriptQueue = make([]BashScriptPayload, 0)
 
-	ticker := time.NewTicker(30 * time.Second)
+	ticker := time.NewTicker(45 * time.Second)
 
 	go func() {
 		for range ticker.C {
