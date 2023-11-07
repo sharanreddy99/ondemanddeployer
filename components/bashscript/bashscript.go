@@ -74,7 +74,7 @@ func getNextTask() BashScriptPayload {
 func init() {
 	bashScriptQueue = make([]BashScriptPayload, 0)
 
-	ticker := time.NewTicker(45 * time.Second)
+	ticker := time.NewTicker(5 * time.Second)
 
 	go func() {
 		for range ticker.C {
