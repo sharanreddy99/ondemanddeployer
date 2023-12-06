@@ -31,7 +31,7 @@ function setupProject() {
         cd ${repoName}
         echo "repository: ${repoName} already existsing, pulling latest code."
         git restore .
-        git pull origin ${branch}
+        git pull origin ${branch} || true
     else
         git clone ${repoURL} -b ${branch} ${repoPath}
     fi
