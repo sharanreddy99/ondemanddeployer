@@ -28,3 +28,12 @@ func (u *GithubController) FetchAllLanguages() {
 	u.Data["json"] = github.FetchAllLanguagesList()
 	u.ServeJSON()
 }
+
+// @Title FetchGithubMetaData
+// @Description Fetch all repositories info from users profile
+// @Success 200 {object}
+// @router /getReposMetadata [get]
+func (u *GithubController) FetchGithubMetaData() {
+	u.Data["json"] = github.FetchGithubMetaData()
+	u.ServeJSON()
+}

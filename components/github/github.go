@@ -1,7 +1,9 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"ondemanddeployer/components/bashscript"
@@ -9,6 +11,9 @@ import (
 	"ondemanddeployer/utils"
 	"strings"
 	"time"
+
+	"github.com/shurcooL/githubv4"
+	"golang.org/x/oauth2"
 )
 
 type GithubRepoObj struct {
@@ -25,9 +30,9 @@ type GithubRepoObj struct {
 }
 
 type GithubLanguageObj struct {
-	Name      string         `json:"name"`
-	Data      map[string]int `json:"data"`
-	Timestamp time.Time      `json:"timestamp"`
+	Name      string           `json:"name"`
+	Data      map[string]int64 `json:"data"`
+	Timestamp time.Time        `json:"timestamp"`
 }
 
 func FetchAllReposList() []GithubRepoObj {
@@ -163,9 +168,9 @@ func FetchAllLanguagesList() []GithubLanguageObj {
 			return respJson
 		}
 
-		currentObj := GithubLanguageObj{Name: repoName, Data: make(map[string]int), Timestamp: time.Now()}
-
+		currentObj := GithubLanguageObj{Name: repoName, Data: make(map[string]int64), Timestamp: time.Now()}
 		if err = json.Unmarshal(responseBytes, &currentObj.Data); err != nil {
+			fmt.Println(string(responseBytes))
 			utils.Log("Error occured while unmarshalling response: ", err.Error())
 			return respJson
 		}
@@ -174,6 +179,53 @@ func FetchAllLanguagesList() []GithubLanguageObj {
 	}
 
 	utils.WriteToCache(constants.GITHUB_LANGUAGES_DATA_PATH, respJson)
-
 	return respJson
+}
+
+func FetchGithubMetaData() map[string]interface{} {
+	cacheObj := utils.ReadFromCache(constants.GITHUB_OPENSOURCE_DATA_PATH)
+	cacheMap, _ := cacheObj.(map[string]interface{})
+	expiryDate := time.Now().Add(-constants.GITHUB_CACHE_EXPIRY_TIME)
+	isExpired := true
+
+	if fetchedAt, ok := cacheMap["fetchedAt"].(time.Time); ok && !fetchedAt.Before(expiryDate) {
+		isExpired = false
+	}
+
+	if !isExpired {
+		return cacheMap
+	}
+
+	client := githubv4.NewClient(oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: constants.GITHUB_TOKEN},
+	)))
+
+	variables := map[string]interface{}{
+		"username": githubv4.String(constants.GITHUB_USERNAME),
+	}
+
+	allStatsQuery := AllStatsQuery{}
+	if err := client.Query(context.Background(), &allStatsQuery, variables); err != nil {
+		utils.Log("Error occured while hitting GraphQL APIs: ", err.Error())
+		return map[string]interface{}{"message": "Error occured while querying data"}
+	}
+
+	var result map[string]interface{}
+
+	jsonBytes, err := json.Marshal(allStatsQuery)
+	if err != nil {
+		utils.Log("Error occurred while marshalling graphql response into string", err.Error())
+		return map[string]interface{}{"message": "Error occurred while marshalling graphql response into string"}
+	}
+
+	err = json.Unmarshal(jsonBytes, &result)
+	if err != nil {
+		utils.Log("Error occurred while unmarshalling graphql marshalled string into map", err.Error())
+		return map[string]interface{}{"message": "Error occurred while unmarshalling graphql marshalled string into map"}
+	}
+
+	result["fetchedAt"] = time.Now()
+	utils.WriteToCache(constants.GITHUB_OPENSOURCE_DATA_PATH, result)
+
+	return result
 }
