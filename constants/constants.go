@@ -12,7 +12,7 @@ var (
 	GITHUB_USERNAME             string        = "sharanreddy99"
 	GITHUB_REPOS_LIST_URL       string        = fmt.Sprintf("https://api.github.com/users/%s/repos", GITHUB_USERNAME)
 	GITHUB_LANGUAGE_LIST_URL    string        = fmt.Sprintf("https://api.github.com/repos/%s/{{repoName}}/languages", GITHUB_USERNAME)
-	GITHUB_ALLOWED_REPOS        []string      = []string{"walmart_order_parser", "housemate", "securechat", "elevator_multithreading", "ceta", "image_slideshow", "polls_viewer"}
+	GITHUB_ALLOWED_REPOS        []string      = []string{"housemate", "securechat", "airline_analysis", "walmart_order_parser", "elevator_multithreading", "ceta", "image_slideshow", "polls_viewer"}
 	GITHUB_LANGUAGES_DATA_PATH  string        = "data/github/languages.json"
 	GITHUB_REPOS_DATA_PATH      string        = "data/github/repos.json"
 	GITHUB_OPENSOURCE_DATA_PATH string        = "data/github/opensourcemetadata.json"
